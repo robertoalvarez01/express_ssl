@@ -1,15 +1,6 @@
-/*
+// Faltan agregar cosas a detallar_inmueble_id
 
-    EN ESTE ARCHIVO SE REALIZAN LAS FUNCIONES DE INSERTAR,
-    BORRAR, ACTUALIZAR Y ENLISTAR LOS OBJETOS:
 
-    - CATEGORIAS
-
-    - UBICACIONES
-
-    - TIPOS DE OPERACIÓN
-
-*/
 
 
 const router = require('express').Router();
@@ -17,6 +8,83 @@ const router = require('express').Router();
 const db = require('../database/database');
 
 const password = "ZAQ12wsx";
+
+// INICIO FUNCIÓN ----- BORRAR DATO TECNICO -----
+
+router.delete('/borrar_dato_tecnico', (req, res) => {
+    const { id, pass } = req.body ;
+    db.query('DELETE FROM datos_tecnicos WHERE id=?', [id],(err, rows, fields) => {
+        if(pass == password){
+            if(! err){
+                res.send({
+                    status : true,
+                    info : "se ha borrado con éxito el registro"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        }else {
+            res.send({
+                status : false,
+                info : "la contraseña ingresada no es compatible"
+            });
+        }
+    });
+});
+
+// FINAL FUNCIÓN ----- BORRAR DATO TECNICO -----
+
+// INICIO FUNCIÓN ----- MOSTRAR DATOS TECNICOS -----
+
+router.get('/datos_tecnicos', (req, res) => {
+    db.query('SELECT * FROM datos_tecnicos', (err, rows, fields) => {
+        if(! err){
+            res.send({
+                status : true,
+                data : rows,
+                info : "se muestran todos los datos tecnicos que hay en la DB"
+            });
+        }else{
+            res.send({
+                status : false,
+                info : err
+            });
+        }
+    });
+});
+
+// FINAL FUNCIÓN ----- MOSTRAR DATOS TECNICOS -----
+
+// INICIO FUNCIÓN ----- INSERTAR DATOS TECNICOS -----
+
+router.post('/insertar_dato_tecnico', (req, res) => {
+    const { pass, idCasa, dormitorios, s_terreno, s_cubierta, s_semicubierta, cochera, pileta } = req.body;
+    if (pass == password){
+        db.query('INSERT INTO datos_tecnicos(idCasa, dormitorios, s_terreno, s_cubierta, s_semicubierta, cochera, pileta) VALUES (?, ?, ?, ?, ?, ?, ?)', [idCasa, dormitorios, s_terreno, s_cubierta, s_semicubierta, cochera, pileta] , (err, rows, fields) => {
+            if(! err){
+                res.send({
+                    status : true,
+                    info : "operacion insertada con éxito"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else{
+        res.send({
+            status : false,
+            info : "la contraseña ingresada no es compatible"
+        });
+    }
+});
+
+// FINAL FUNCIÓN ----- INSERTAR DATOS TECNICOS -----
 
 // INICIO FUNCIÓN ----- INSERTAR INMUEBLES -----
 
@@ -51,7 +119,7 @@ router.post('/insertar_inmueble', (req, res) => {
 // INICIO FUNCIÓN ----- MOSTRAR INMUEBLES -----
 
 router.get('/listar_inmuebles', (req, res) => {
-    db.query('SELECT * FROM inmuebles JOIN ubicacion WHERE inmuebles.idLocalidad = ubicacion.id', (err, rows, fields) => {
+    db.query('SELECT * FROM inmuebles JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id JOIN categorias ON inmuebles.idCategoria = categorias.id', (err, rows, fields) => {
         if(! err){
             res.send({
                 status : true,
@@ -59,7 +127,7 @@ router.get('/listar_inmuebles', (req, res) => {
                 info : "se muestran todas los inmuebles que hay en la DB"
             });
         }else{
-            console.log({
+            res.send({
                 status : false,
                 info : err
             });
@@ -68,6 +136,93 @@ router.get('/listar_inmuebles', (req, res) => {
 });
 
 // FINAL FUNCIÓN ----- MOSTRAR INMUEBLES -----
+
+// INICIO FUNCIÓN ----- DETALLAR INMUEBLE X ID-----
+
+router.get('/detallar_inmueble_id', (req, res) => {
+    const { id } = req.body;
+    if (id != undefined) {
+        db.query('SELECT inmuebles.*, ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE inmuebles.id = ?;', [ id ] ,(err, rows, fields) => {
+            if(! err){
+                res.send({
+                    status : true,
+                    data : rows ,
+                    info : "Se muestran todos los detalles de la casa con ese id"
+                });
+                
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else{
+        res.send({
+            status : false,
+            info : "No has ingresado ningun id para buscar"
+        });
+    }
+});
+
+// FINAL FUNCIÓN ----- DETALLAR INMUEBLE X ID -----
+
+
+// INICIO FUNCIÓN ----- MODIFICAR INMUEBLE -----
+
+router.put('/modificar_inmueble', (req, res) => {
+    const { id, pass,  idOperacion, precio, idLocalidad, direccion, idCategoria, descripcion, estado} = req.body;
+    if (pass == password){
+        db.query('UPDATE inmuebles SET idOperacion = ?, precio = ?, idLocalidad = ?, direccion = ?, idCategoria = ?, descripcion = ?, estado = ? WHERE id = ?', [idOperacion, precio, idLocalidad, direccion, idCategoria, descripcion, estado, id] , (err, rows, fields) => {
+            if(! err){
+                res.send({
+                    status : true,
+                    info : "inmueble modificado con éxito"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else{
+        res.send({
+            status : false,
+            info : "la contraseña ingresada no es compatible"
+        });
+    }
+});
+
+// FINAL FUNCIÓN ----- MODIFICAR INMUEBLE -----
+
+// INICIO FUNCIÓN ----- BORRAR INMUEBLE -----
+
+router.delete('/borrar_inmueble', (req, res) => {
+    const { id, pass } = req.body ;
+    db.query('DELETE FROM inmuebles WHERE id = ?', [ id ],(err, rows, fields) => {
+        if(pass == password){
+            if(! err){
+                res.send({
+                    status : true,
+                    info : "se ha borrado con éxito el registro"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        }else {
+            res.send({
+                status : false,
+                info : "la contraseña ingresada no es compatible"
+            });
+        }
+    });
+});
+
+// FINAL FUNCIÓN ----- BORRAR INMUEBLE -----
 
 
 // INICIO FUNCIÓN ----- BORRAR UBICACIÓN -----
@@ -314,7 +469,7 @@ router.delete('/borrar_categoria', (req, res) => {
 
 // FINAL FUNCIÓN ----- BORRAR CATEGORIA -----
 
-// INICIO FUNCIÓN ----- MOSTRAR CATEGORIA -----
+// INICIO FUNCIÓN ----- MOSTRAR CATEGORIAS -----
 
 router.get('/categorias', (req, res) => {
     db.query('SELECT * FROM categorias', (err, rows, fields) => {
@@ -333,27 +488,34 @@ router.get('/categorias', (req, res) => {
     });
 });
 
-// FINAL FUNCIÓN ----- MOSTRAR CATEGORIA -----
+// FINAL FUNCIÓN ----- MOSTRAR CATEGORIAS -----
 
 // INICIO FUNCIÓN ----- BUSCAR CATEGORIA X ID -----
 
 router.get('/buscar_categoria_id', (req, res) => {
     const { id } = req.body;
-    db.query('SELECT * FROM categorias WHERE id LIKE ? ', [ id ] , (err, rows, fields) => {
-        if(! err){
-            console.log(rows);
-            res.send({
-                status : true,
-                data : rows,
-                info : "se muestran todas las categorias con ese id que hay en la DB"
-            });
-        }else{
-            res.send({
-                status : false,
-                info : err
-            });
-        }
-    });
+    if (id != undefined) {
+        db.query('SELECT * FROM categorias WHERE id LIKE ? ', [ id ] , (err, rows, fields) => {
+            if(! err){
+                console.log(rows);
+                res.send({
+                    status : true,
+                    data : rows,
+                    info : "se muestran todas las categorias con ese id que hay en la DB"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else{
+        res.send({
+            status : false,
+            info : "No has ingresado ningun id para buscar"
+        });
+    }
 });
 
 // FINAL FUNCIÓN ----- BUSCAR CATEGORIA X ID -----
@@ -362,21 +524,28 @@ router.get('/buscar_categoria_id', (req, res) => {
 
 router.get('/buscar_categoria_nombre', (req, res) => {
     const { categoria } = req.body;
-    db.query('SELECT * FROM categorias WHERE categoria LIKE ? ', [ categoria ] , (err, rows, fields) => {
-        if(! err){
-            console.log(rows);
-            res.send({
-                status : true,
-                data : rows,
-                info : "se muestran todas las categorias con ese nombre que hay en la DB"
-            });
-        }else{
-            res.send({
-                status : false,
-                info : err
-            });
-        }
-    });
+    if (categoria != undefined) {
+        db.query('SELECT * FROM categorias WHERE categoria LIKE ? ', [ categoria ] , (err, rows, fields) => {
+            if(! err){
+                console.log(rows);
+                res.send({
+                    status : true,
+                    data : rows,
+                    info : "se muestran todas las categorias con ese nombre que hay en la DB"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    } else {
+        res.send({
+            status : false,
+            info : "No has ingresado ningun nombre de categoria para buscar"
+        });
+    }
 });
 
 // FINAL FUNCIÓN ----- BUSCAR CATEGORIA X NOMBRE -----
