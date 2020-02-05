@@ -9,6 +9,11 @@ const db = require('../database/database');
 
 const password = "ZAQ12wsx";
 
+
+router.get('/', (req, res) => {
+    res.send('Servidor funcionando con exito');
+});
+
 // INICIO FUNCIÓN ----- BORRAR DATO TECNICO -----
 
 router.delete('/borrar_dato_tecnico', (req, res) => {
