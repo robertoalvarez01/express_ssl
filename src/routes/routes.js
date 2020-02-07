@@ -124,7 +124,7 @@ router.post('/insertar_inmueble', (req, res) => {
 // INICIO FUNCIÓN ----- MOSTRAR INMUEBLES -----
 
 router.get('/listar_inmuebles', (req, res) => {
-    db.query('SELECT * FROM inmuebles JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id JOIN categorias ON inmuebles.idCategoria = categorias.id', (err, rows, fields) => {
+    db.query('SELECT inmuebles.*, ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id', (err, rows, fields) => {
         if(! err){
             res.send({
                 status : true,
