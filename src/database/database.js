@@ -1,10 +1,10 @@
 const mysql = require('mysql');
 
 var db_config = {
-  host: 'us-cdbr-iron-east-04.cleardb.net',
-  user: 'bca85caf769d95',
-  password: 'cc74bf51',
-  database: 'heroku_498e6b6a2988f05',
+  host: 'localhost',
+  user: 'root',
+  password: 'ZAQ12wsx',
+  database: 'sbacco',
   multipleStatements: true
 };
 
