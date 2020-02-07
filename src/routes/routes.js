@@ -279,6 +279,38 @@ router.get('/ubicaciones', (req, res) => {
 
 // FINAL FUNCIÓN ----- MOSTRAR UBICACIÓN -----
 
+// INICIO FUNCIÓN ----- MOSTRAR UBICACIÓN -----
+
+// INICIO FUNCIÓN ----- BUSCAR LOCALIDADES -----
+
+router.get('/buscar_localidades', (req, res) => {
+    const { partido } = req.body;
+    if (partido != undefined) {
+        db.query('SELECT * FROM ubicacion WHERE partido LIKE ? ', [ partido ] , (err, rows, fields) => {
+            if(! err){
+                console.log(rows);
+                res.send({
+                    status : true,
+                    data : rows,
+                    info : "se muestran todas las categorias con ese id que hay en la DB"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else{
+        res.send({
+            status : false,
+            info : "No has ingresado ningun id para buscar"
+        });
+    }
+});
+
+// FINAL FUNCIÓN ----- BUSCAR LOCALIDADES -----
+
 
 
 // INICIO FUNCIÓN ----- INSERTAR UBICACIÓN -----
