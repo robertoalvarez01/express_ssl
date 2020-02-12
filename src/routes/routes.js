@@ -1,7 +1,3 @@
-// Faltan agregar cosas a detallar_inmueble_id
-
-
-
 
 const router = require('express').Router();
 
@@ -108,6 +104,34 @@ router.get('/filtrar_ubicacion', (req, res) => {
 });
 
 
+
+router.get('/filtrar_todo', (req, res) => {
+    const {idLocalidad, idCategoria, idOperacion} = req.body;
+    db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idLocalidad = ? AND idCategoria = ? AND idOperacion = ?', [idLocalidad, idCategoria, idOperacion], (err, rows, fields) => {
+        if(! err){
+            db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [rows[0].id], (error, imagen, celdas) => {
+                if (! error){
+                    res.send({
+                        status : true,
+                        data : rows,
+                        header: imagen,
+                        info : "se muestran todas los inmuebles que hay en la DB"
+                    });
+                }else{
+                    res.send({
+                        status : false,
+                        info : error
+                    });
+                }
+            });
+        }else{
+            res.send({
+                status : false,
+                info : err
+            });
+        }
+    });
+});
 
 
 
