@@ -19,12 +19,12 @@ router.get('/', (req, res) => {
 
 router.get('/filtrar_operacion', (req, res) => {
     const {idOperacion} = req.body;
-    db.query('SELECT * FROM inmuebles WHERE idOperacion = ?', [idOperacion], (err, rows, fields) => {
+    db.query('SELECT  ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idOperacion = ?', [idOperacion], (err, rows, fields) => {
         if(! err){
             res.send({
                 status : true,
                 data : rows,
-                info : "imagen insertada con éxito"
+                info : "Aqui estan los inmuebles relacionados a esa operacion"
             });
         }else{
             res.send({
