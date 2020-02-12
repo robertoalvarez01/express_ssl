@@ -14,6 +14,184 @@ router.get('/', (req, res) => {
     res.send('Servidor funcionando con exito');
 });
 
+
+// IMAGES
+
+
+
+
+
+
+
+
+
+
+
+
+
+// IMAGES
+
+router.post('/insertar_imagen', (req, res) => {
+    const { idCasa, nombre, header , pass} = req.body;
+    if (pass == password){
+        db.query('INSERT INTO imagenes(idCasa, nombre, header) VALUES (?, ?, ?)', [idCasa, nombre, header] , (err, rows, fields) => {
+            if(! err){
+                res.send({
+                    status : true,
+                    info : "imagen insertada con éxito"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else{
+        res.send({
+            status : false,
+            info : "la contraseña ingresada no es compatible"
+        });
+    }
+});
+
+
+
+
+
+
+//SERVICES
+
+
+router.post('/insertar_servicio', (req, res) => {
+    const { idCasa, luz, agua, calefaccion , pass} = req.body;
+    if (pass == password){
+        db.query('INSERT INTO servicios(idCasa, luz, agua, calefaccion) VALUES (?, ?, ?, ?)', [idCasa, luz, agua, calefaccion] , (err, rows, fields) => {
+            if(! err){
+                res.send({
+                    status : true,
+                    info : "servicio insertado con éxito"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else{
+        res.send({
+            status : false,
+            info : "la contraseña ingresada no es compatible"
+        });
+    }
+});
+
+
+router.put('/modificar_servicio', (req, res) => {
+    const {id, idCasa, luz, agua, calefaccion , pass} = req.body;
+    if (pass == password){
+        db.query('UPDATE servicios SET idCasa =?, luz =?, agua =?, calefaccion =? WHERE id = ?', [idCasa, luz, agua, calefaccion, id] , (err, rows, fields) => {
+            if(! err){
+                res.send({
+                    status : true,
+                    info : "Servicio modificado con éxito"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else{
+        res.send({
+            status : false,
+            info : "la contraseña ingresada no es compatible"
+        });
+    }
+});
+
+router.delete('/borrar_servcio', (req, res) => {
+    const { id, pass } = req.body ;
+    db.query('DELETE FROM servicios WHERE id=?', [id],(err, rows, fields) => {
+        if(pass == password){
+            if(! err){
+                res.send({
+                    status : true,
+                    info : "se ha borrado con éxito el registro"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        }else {
+            res.send({
+                status : false,
+                info : "la contraseña ingresada no es compatible"
+            });
+        }
+    });
+});
+
+router.get('/servicios', (req, res) => {
+    db.query('SELECT * FROM servicios', (err, rows, fields) => {
+        if(! err){
+            res.send({
+                status : true,
+                data : rows,
+                info : "se muestran todos los servicios que hay en la DB"
+            });
+        }else{
+            res.send({
+                status : false,
+                info : err
+            });
+        }
+    });
+});
+
+//SERVICES
+
+
+
+
+
+
+
+
+
+
+// INICIO FUNCIÓN ----- MODIFICAR DATO TECNICO -----
+
+router.put('/modificar_dato_tecnico', (req, res) => {
+    const {id, pass, idCasa, dormitorios, s_terreno, s_cubierta, s_semicubierta, cochera, pileta } = req.body;
+    if (pass == password){
+        db.query('UPDATE datos_tecnicos SET idCasa =?, dormitorios =?, s_terreno =?, s_cubierta =?, s_semicubierta =?, cochera =?, pileta =? WHERE id = ?', [idCasa, dormitorios, s_terreno, s_cubierta, s_semicubierta, cochera, pileta , id] , (err, rows, fields) => {
+            if(! err){
+                res.send({
+                    status : true,
+                    info : "Dato tecnico modificado con éxito"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else{
+        res.send({
+            status : false,
+            info : "la contraseña ingresada no es compatible"
+        });
+    }
+});
+
+// FINAL FUNCIÓN ----- MODIFICAR DATO TECNICO -----
+
 // INICIO FUNCIÓN ----- BORRAR DATO TECNICO -----
 
 router.delete('/borrar_dato_tecnico', (req, res) => {
@@ -279,7 +457,6 @@ router.get('/ubicaciones', (req, res) => {
 
 // FINAL FUNCIÓN ----- MOSTRAR UBICACIÓN -----
 
-// INICIO FUNCIÓN ----- MOSTRAR UBICACIÓN -----
 
 // INICIO FUNCIÓN ----- BUSCAR LOCALIDADES -----
 
