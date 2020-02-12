@@ -426,12 +426,22 @@ router.get('/listar_inmuebles', (req, res) => {
 router.get('/detallar_inmueble_id', (req, res) => {
     const { id } = req.body;
     if (id != undefined) {
-        db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria,servicios.*, datos_tecnicos.*, imagenes.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id LEFT JOIN imagenes ON inmuebles.id = imagenes.idCasa LEFT JOIN servicios ON inmuebles.id = servicios.idCasa LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa WHERE inmuebles.id = ?;', [ id ] ,(err, rows, fields) => {
+        db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria,servicios.*, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id LEFT JOIN servicios ON inmuebles.id = servicios.idCasa LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa WHERE inmuebles.id = ?;', [ id ] ,(err, rows, fields) => {
             if(! err){
-                res.send({
-                    status : true,
-                    data : rows ,
-                    info : "Se muestran todos los detalles de la casa con ese id"
+                db.query('SELECT * FROM imagenes WHERE idCasa = ?', [id], (error, images, celdas) => {
+                    if(! error){
+                        res.send({
+                            status : true,
+                            data : rows ,
+                            imagenes : images,
+                            info : "Se muestran todos los detalles de la casa con ese id"
+                        });
+                    }else { 
+                        res.send({
+                            status : false,
+                            info : "Problemas en el segundo Query (Imagenes)"
+                        }); 
+                    }
                 });
                 
             }else{
