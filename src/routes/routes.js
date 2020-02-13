@@ -20,10 +20,10 @@ router.get('/send_email', (req, res) => {
 // CONFIG
 
 var transporter = nodemailer.createTransport({
-    service: 'SendPulse',
+    service: 'Gmail',
     auth: {
-      user: 'franco@asbaccopropiedades.com.ar',
-      pass: '12345678'
+      user: 'gonzaro0112@gmail.com',
+      pass: 'Rober1136484778'
     }
   });  
 
@@ -32,7 +32,7 @@ var transporter = nodemailer.createTransport({
 
 
     var mailOptions = {
-        from: 'franco@asbaccopripiedades.com.ar',
+        from: 'gonzaro0112@gmail.com',
         to: 'robertogonzaloalvarez01@gmail.com',
         subject: 'Sending Email using Node.js',
         text: 'That was easy!'
