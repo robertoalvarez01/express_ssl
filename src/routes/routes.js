@@ -20,7 +20,7 @@ router.get('/send_email', (req, res) => {
 // CONFIG
 
 var transporter = nodemailer.createTransport({
-    service: 'gmail',
+    service: 'SendPulse',
     auth: {
       user: 'franco@asbaccopropiedades.com.ar',
       pass: '12345678'
