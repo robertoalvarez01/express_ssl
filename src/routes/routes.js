@@ -20,7 +20,10 @@ router.get('/send_email', (req, res) => {
 // CONFIG
 
     var transporter = nodemailer.createTransport({
-        service: 'Gmail',
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        requireTLS: true,
         auth: {
         user: 'gonzaro0112@gmail.com',
         pass: 'Rober1136484778'
