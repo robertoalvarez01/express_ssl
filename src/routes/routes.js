@@ -37,10 +37,16 @@ router.get('/send_email', (req, res) => {
     };
     
     transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-        console.log(error);
+        if (! error) {
+            res.send({
+                status : true,
+                info : "email sent: "+ info.response
+            });
         } else {
-        console.log('Email sent: ' + info.response);
+            res.send({
+                status: false,
+                info : error
+            });
         }
     }); 
     
