@@ -22,7 +22,7 @@ router.get('/send_email', (req, res) => {
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'franco@asbaccopripiedades.com.ar',
+      user: 'franco@asbaccopropiedades.com.ar',
       pass: '12345678'
     }
   });  
