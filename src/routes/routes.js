@@ -14,6 +14,9 @@ router.get('/', (req, res) => {
 
 // EMAIL SENDER -----------------------------------
 
+
+router.get('/send_email', (req, res) => {
+
 // CONFIG
 
 var transporter = nodemailer.createTransport({
@@ -27,7 +30,6 @@ var transporter = nodemailer.createTransport({
 
 // CONFIG
 
-router.get('/send_email', (req, res) => {
 
     var mailOptions = {
         from: 'franco@asbaccopripiedades.com.ar',
