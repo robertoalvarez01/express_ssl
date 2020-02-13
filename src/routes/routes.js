@@ -3,6 +3,8 @@ const router = require('express').Router();
 
 const db = require('../database/database');
 
+var nodemailer = require('nodemailer');
+
 const password = "ZAQ12wsx";
 
 
@@ -12,37 +14,38 @@ router.get('/', (req, res) => {
 
 // EMAIL SENDER -----------------------------------
 
-
-
-var nodemailer = require('nodemailer');
+// CONFIG
 
 var transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'youremail@gmail.com',
-    pass: 'yourpassword'
-  }
+    service: 'gmail',
+    auth: {
+      user: 'franco@asbaccopripiedades.com.ar',
+      pass: '12345678'
+    }
+  });  
+
+
+// CONFIG
+
+router.get('/send_email', (req, res) => {
+
+    var mailOptions = {
+        from: 'franco@asbaccopripiedades.com.ar',
+        to: 'robertogonzaloalvarez01@gmail.com',
+        subject: 'Sending Email using Node.js',
+        text: 'That was easy!'
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+        console.log(error);
+        } else {
+        console.log('Email sent: ' + info.response);
+        }
+    }); 
+    
+  
 });
-
-var mailOptions = {
-  from: 'youremail@gmail.com',
-  to: 'myfriend@yahoo.com',
-  subject: 'Sending Email using Node.js',
-  text: 'That was easy!'
-};
-
-transporter.sendMail(mailOptions, function(error, info){
-  if (error) {
-    console.log(error);
-  } else {
-    console.log('Email sent: ' + info.response);
-  }
-}); 
-
-
-
-
-
 
 
 // EMAIL SENDER -----------------------------------
