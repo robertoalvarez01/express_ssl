@@ -20,7 +20,7 @@ router.get('/send_email', (req, res) => {
 // CONFIG
 
 var transporter = nodemailer.createTransport({
-    host : 104.197.241.81,
+    host : '104.197.241.81',
     port : 8080 ,
     service: 'Gmail',
     auth: {
