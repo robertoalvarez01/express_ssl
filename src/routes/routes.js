@@ -19,15 +19,13 @@ router.get('/send_email', (req, res) => {
 
 // CONFIG
 
-var transporter = nodemailer.createTransport({
-    host : '104.197.241.81',
-    port : 8080 ,
-    service: 'Gmail',
-    auth: {
-      user: 'gonzaro0112@gmail.com',
-      pass: 'Rober1136484778'
-    }
-  });  
+    var transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+        user: 'gonzaro0112@gmail.com',
+        pass: 'Rober1136484778'
+        }
+    });  
 
 
 // CONFIG
@@ -41,17 +39,17 @@ var transporter = nodemailer.createTransport({
     };
     
     transporter.sendMail(mailOptions, function(error, info){
-        if (! error) {
-            res.send({
-                status : true,
-                info : "email sent: "+ info.response
-            });
-        } else {
+        if (error) {
             res.send({
                 status: false,
                 info : error
             });
-        }
+        } else {
+            res.send({
+                status : true,
+                info : "email sent: "+ info.response
+            });
+        }s
     }); 
     
   
