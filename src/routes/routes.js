@@ -678,8 +678,8 @@ router.get('/ubicaciones', (req, res) => {
 
 // INICIO FUNCIÓN ----- BUSCAR LOCALIDADES -----
 
-router.get('/buscar_localidades', (req, res) => {
-    const { partido } = req.body;
+router.get('/buscar_localidades/:partido', (req, res) => {
+    const  partido  = req.params.partido;
     if (partido != undefined) {
         db.query('SELECT * FROM ubicacion WHERE partido LIKE ? ', [ partido ] , (err, rows, fields) => {
             if(! err){
@@ -924,8 +924,8 @@ router.get('/categorias', (req, res) => {
 
 // INICIO FUNCIÓN ----- BUSCAR CATEGORIA X ID -----
 
-router.get('/buscar_categoria_id', (req, res) => {
-    const { id } = req.body;
+router.get('/buscar_categoria_id/:id', (req, res) => {
+    const  id  = req.params.id;
     if (id != undefined) {
         db.query('SELECT * FROM categorias WHERE id LIKE ? ', [ id ] , (err, rows, fields) => {
             if(! err){
@@ -954,8 +954,8 @@ router.get('/buscar_categoria_id', (req, res) => {
 
 // INICIO FUNCIÓN ----- BUSCAR CATEGORIA X NOMBRE -----
 
-router.get('/buscar_categoria_nombre', (req, res) => {
-    const { categoria } = req.body;
+router.get('/buscar_categoria_nombre/:categoria', (req, res) => {
+    const  categoria  = req.params.categoria;
     if (categoria != undefined) {
         db.query('SELECT * FROM categorias WHERE categoria LIKE ? ', [ categoria ] , (err, rows, fields) => {
             if(! err){
