@@ -52,7 +52,11 @@ router.get('/filtrar_categoria/:idCategoria', (req, res) => {
     const idCategoria = req.params.idCategoria;
     db.query('SELECT  ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idCategoria = ?', [idCategoria], (err, rows, fields) => {
         if(! err){
-            db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [rows[0].id], (error, imagen, celdas) => {
+            casas = [];
+            rows.forEach(inmueble => {
+                casas.push(inmueble.id);
+            })
+            db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
                 if (! error){
                     res.send({
                         status : true,
@@ -83,7 +87,11 @@ router.get('/filtrar_ubicacion/:idLocalidad', (req, res) => {
     const idLocalidad = req.params.idLocalidad;
     db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idLocalidad = ?', [idLocalidad], (err, rows, fields) => {
         if(! err){
-            db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [rows[0].id], (error, imagen, celdas) => {
+            casas = [];
+            rows.forEach(inmueble => {
+                casas.push(inmueble.id);
+            })
+            db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
                 if (! error){
                     res.send({
                         status : true,
@@ -109,11 +117,15 @@ router.get('/filtrar_ubicacion/:idLocalidad', (req, res) => {
 
 
 
-router.get('/filtrar_todo', (req, res) => {
-    const {idLocalidad, idCategoria, idOperacion} = req.body;
+router.get('/filtrar_todo/:idLocalidad/:idCategoria/:idOperacion', (req, res) => {
+    const { idLocalidad, idCategoria, idOperacion }= req.params;
     db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idLocalidad = ? AND idCategoria = ? AND idOperacion = ?', [idLocalidad, idCategoria, idOperacion], (err, rows, fields) => {
         if(! err){
-            db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [rows[0].id], (error, imagen, celdas) => {
+            casas = [];
+            rows.forEach(inmueble => {
+                casas.push(inmueble.id);
+            })
+            db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
                 if (! error){
                     res.send({
                         status : true,
