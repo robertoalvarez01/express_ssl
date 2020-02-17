@@ -498,7 +498,11 @@ router.post('/insertar_inmueble', (req, res) => {
 router.get('/listar_inmuebles', (req, res) => {
     db.query('SELECT  ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id', (err, rows, fields) => {
         if(! err){
-            db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [rows[0].id], (error, imagen, celdas) => {
+            casas = "0";
+            rows.forEach(inmueble => {
+                casas += ", " + inmueble.id;
+            })
+            db.query('SELECT * FROM imagenes WHERE idCasa IN ? AND header = true', [casas], (error, imagen, celdas) => {
                 if (! error){
                     res.send({
                         status : true,
