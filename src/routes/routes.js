@@ -502,7 +502,7 @@ router.get('/listar_inmuebles', (req, res) => {
             rows.forEach(inmueble => {
                 casas.push(inmueble.id);
             })
-            db.query('SELECT * FROM imagenes WHERE idCasa IN ? AND header = true', [casas], (error, imagen, celdas) => {
+            db.query('SELECT * FROM imagenes WHERE idCasa IN (?) AND header = true', [casas], (error, imagen, celdas) => {
                 if (! error){
                     res.send({
                         status : true,
