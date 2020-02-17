@@ -13,13 +13,13 @@ router.get('/', (req, res) => {
 
 // FILTERS ------------------------------------
 
-router.get('/filtrar_operacion', (req, res) => {
-    const {idOperacion} = req.body;
+router.get('/filtrar_operacion/:idOperacion', (req, res) => {
+    let idOperacion = req.params.idOperacion;
     db.query('SELECT  ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idOperacion = ?', [idOperacion], (err, rows, fields) => {
         if(! err){
-            casas = "0";
+            casas = [];
             rows.forEach(inmueble => {
-                casas += ", " + inmueble.id;
+                casas.push(inmueble.id);
             })
             db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
                 if (! error){
@@ -48,8 +48,8 @@ router.get('/filtrar_operacion', (req, res) => {
 
 
 
-router.get('/filtrar_categoria', (req, res) => {
-    const {idCategoria} = req.body;
+router.get('/filtrar_categoria/:idCategoria', (req, res) => {
+    const idCategoria = req.params.idCategoria;
     db.query('SELECT  ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idCategoria = ?', [idCategoria], (err, rows, fields) => {
         if(! err){
             db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [rows[0].id], (error, imagen, celdas) => {
@@ -79,8 +79,8 @@ router.get('/filtrar_categoria', (req, res) => {
 
 
 
-router.get('/filtrar_ubicacion', (req, res) => {
-    const {idLocalidad} = req.body;
+router.get('/filtrar_ubicacion/:idLocalidad', (req, res) => {
+    const idLocalidad = req.params.idLocalidad;
     db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idLocalidad = ?', [idLocalidad], (err, rows, fields) => {
         if(! err){
             db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [rows[0].id], (error, imagen, celdas) => {
@@ -530,8 +530,8 @@ router.get('/listar_inmuebles', (req, res) => {
 
 // INICIO FUNCIÓN ----- DETALLAR INMUEBLE X ID-----
 
-router.get('/detallar_inmueble_id', (req, res) => {
-    const { id } = req.body;
+router.get('/detallar_inmueble_id/:id', (req, res) => {
+    const  id  = req.params.id;
     if (id != undefined) {
         db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria,servicios.*, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id LEFT JOIN servicios ON inmuebles.id = servicios.idCasa LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa WHERE inmuebles.id = ?;', [ id ] ,(err, rows, fields) => {
             if(! err){
@@ -544,7 +544,7 @@ router.get('/detallar_inmueble_id', (req, res) => {
                             info : "Se muestran todos los detalles de la casa con ese id"
                         });
                     }else { 
-                        res.send({
+                        res.send({ 
                             status : false,
                             info : "Problemas en el segundo Query (Imagenes)"
                         }); 
