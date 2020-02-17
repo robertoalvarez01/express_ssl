@@ -3,64 +3,12 @@ const router = require('express').Router();
 
 const db = require('../database/database');
 
-var nodemailer = require('nodemailer');
-
 const password = "ZAQ12wsx";
 
 
 router.get('/', (req, res) => {
     res.send('Servidor funcionando con exito');
 });
-
-// EMAIL SENDER -----------------------------------
-
-
-router.get('/send_email', (req, res) => {
-
-// CONFIG
-
-    var transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        requireTLS: true,
-        auth: {
-        user: 'gonzaro0112@gmail.com',
-        pass: 'Rober1136484778'
-        }
-    });  
-
-
-// CONFIG
-
-
-    var mailOptions = {
-        from: 'franco@asbaccopropiedades.com.ar',
-        to: 'robertogonzaloalvarez01@gmail.com',
-        subject: 'Sending Email using Node.js',
-        text: 'That was easy!'
-    };
-    
-    transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-            res.send({
-                status: false,
-                info : error
-            });
-        } else {
-            res.send({
-                status : true,
-                info : "email sent: "+ info.response
-            });
-        }s
-    }); 
-    
-  
-});
-
-
-// EMAIL SENDER -----------------------------------
-
 
 
 // FILTERS ------------------------------------
@@ -69,7 +17,11 @@ router.get('/filtrar_operacion', (req, res) => {
     const {idOperacion} = req.body;
     db.query('SELECT  ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idOperacion = ?', [idOperacion], (err, rows, fields) => {
         if(! err){
-            db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [rows[0].id], (error, imagen, celdas) => {
+            casas = "0";
+            rows.forEach(inmueble => {
+                casas += ", " + inmueble.id;
+            })
+            db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
                 if (! error){
                     res.send({
                         status : true,
