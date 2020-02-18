@@ -151,17 +151,7 @@ router.get('/filtrar_todo/:idLocalidad/:idCategoria/:idOperacion', (req, res) =>
 
 
 
-
-
-
-
-
-
-
-
-
-
-// FILTERS ------------------------------------
+// !FILTERS ------------------------------------
 
 // IMAGES
 
@@ -516,10 +506,21 @@ router.get('/listar_inmuebles', (req, res) => {
             })
             db.query('SELECT * FROM imagenes WHERE idCasa IN (?) AND header = true', [casas], (error, imagen, celdas) => {
                 if (! error){
+
+                    rows.forEach(propiedad => {
+                        imagen.forEach(header => {
+                            if (propiedad.id == header.idCasa){
+                                propiedad.header = header.nombre;
+                            }
+                        });
+                    });
+
+
+
+
                     res.send({
                         status : true,
                         data : rows,
-                        header: imagen,
                         info : "se muestran todas los inmuebles que hay en la DB"
                     });
                 }else{
