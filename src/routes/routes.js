@@ -183,6 +183,46 @@ router.get('/filtrar_todo/:idLocalidad/:idCategoria/:idOperacion', (req, res) =>
 
 
 
+router.get('/filtrar_categoria_operacion/:idCategoria/:idOperacion', (req, res) => {
+    const { idLocalidad, idCategoria, idOperacion }= req.params;
+    db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idCategoria = ? AND idOperacion = ?', [idCategoria, idOperacion], (err, rows, fields) => {
+        if(! err){
+            casas = [];
+            rows.forEach(inmueble => {
+                casas.push(inmueble.id);
+            })
+            db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
+                if (! error){
+
+                    rows.forEach(propiedad => {
+                        imagen.forEach(header => {
+                            if (propiedad.id == header.idCasa){
+                                propiedad.header = header.nombre;
+                            }
+                        });
+                    });
+
+                    res.send({
+                        status : true,
+                        data : rows,
+                        info : "se muestran todas los inmuebles que hay en la DB"
+                    });
+                }else{
+                    res.send({
+                        status : false,
+                        info : error
+                    });
+                }
+            });
+        }else{
+            res.send({
+                status : false,
+                info : err
+            });
+        }
+    });
+});
+
 // !FILTERS ------------------------------------
 
 // IMAGES
