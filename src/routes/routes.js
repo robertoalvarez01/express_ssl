@@ -530,7 +530,7 @@ router.post('/insertar_inmueble', (req, res) => {
 // INICIO FUNCIÓN ----- MOSTRAR INMUEBLES -----
 
 router.get('/listar_inmuebles/:cantidad', (req, res) => {
-    const cantidad = req.params.cantidad;
+    const cantidad = parseInt(req.params.cantidad);
     db.query('SELECT  ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id ORDER BY inmuebles.id DESC LIMIT ?', [cantidad],(err, rows, fields) => {
         if(! err){
             casas = [];
