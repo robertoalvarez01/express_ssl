@@ -540,10 +540,10 @@ router.post('/insertar_dato_tecnico', (req, res) => {
 // INICIO FUNCIÓN ----- INSERTAR INMUEBLES -----
 
 router.post('/insertar_inmueble', (req, res) => {
-    const { idOperacion, precio, idLocalidad, direccion, idCategoria, descripcion, estado, pass } = req.body;
+    const { idOperacion, precio, idLocalidad, direccion, idCategoria, descripcion, estado,moneda, pass } = req.body;
     if (pass == password){
-        db.query('INSERT INTO inmuebles(idOperacion, precio, idLocalidad, direccion, idCategoria, descripcion, estado) VALUES (? , ?, ?, ? , ?, ?, ?)', 
-        [idOperacion, precio, idLocalidad, direccion, idCategoria, descripcion, estado ] , 
+        db.query('INSERT INTO inmuebles(idOperacion, precio, idLocalidad, direccion, idCategoria, descripcion, estado, moneda) VALUES (? , ?, ?, ? , ?, ?, ?, ?)', 
+        [idOperacion, precio, idLocalidad, direccion, idCategoria, descripcion, estado, moneda ] , 
         (err, rows, fields) => {
             if(! err){
                 res.send({
@@ -658,9 +658,9 @@ router.get('/detallar_inmueble_id/:id', (req, res) => {
 // INICIO FUNCIÓN ----- MODIFICAR INMUEBLE -----
 
 router.put('/modificar_inmueble', (req, res) => {
-    const { id, pass,  idOperacion, precio, idLocalidad, direccion, idCategoria, descripcion, estado} = req.body;
+    const { id, pass,  idOperacion, precio, idLocalidad, direccion, idCategoria, descripcion, estado, moneda} = req.body;
     if (pass == password){
-        db.query('UPDATE inmuebles SET idOperacion = ?, precio = ?, idLocalidad = ?, direccion = ?, idCategoria = ?, descripcion = ?, estado = ? WHERE id = ?', [idOperacion, precio, idLocalidad, direccion, idCategoria, descripcion, estado, id] , (err, rows, fields) => {
+        db.query('UPDATE inmuebles SET idOperacion = ?, precio = ?, idLocalidad = ?, direccion = ?, idCategoria = ?, descripcion = ?, estado = ?, moneda = ? WHERE id = ?', [idOperacion, precio, idLocalidad, direccion, idCategoria, descripcion, estado, moneda, id] , (err, rows, fields) => {
             if(! err){
                 res.send({
                     status : true,

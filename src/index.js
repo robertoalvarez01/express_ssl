@@ -13,7 +13,7 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-app.set('port', process.env.PORT || 8080);
+app.set('port', process.env.PORT || 3000);
 
 
 // Routes
