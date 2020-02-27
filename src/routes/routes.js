@@ -90,7 +90,7 @@ router.get('/filtrar_operacion/:idOperacion/:order', (req, res) => {
             }
         });
     }else if(order == "high"){
-        db.query('SELECT  ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idOperacion = ? ORDER BY precio DES', [idOperacion], (err, rows, fields) => {
+        db.query('SELECT  ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idOperacion = ? ORDER BY precio DESC', [idOperacion], (err, rows, fields) => {
             if(! err){
                 casas = [];
                 rows.forEach(inmueble => {
@@ -132,171 +132,512 @@ router.get('/filtrar_operacion/:idOperacion/:order', (req, res) => {
 
 
 
-router.get('/filtrar_categoria/:idCategoria', (req, res) => {
-    const idCategoria = req.params.idCategoria;
-    db.query('SELECT  ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idCategoria = ?', [idCategoria], (err, rows, fields) => {
-        if(! err){
-            casas = [];
-            rows.forEach(inmueble => {
-                casas.push(inmueble.id);
-            })
-            db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
-                if (! error){
+router.get('/filtrar_categoria/:idCategoria/:order', (req, res) => {
+    const {idCategoria, order} = req.params;
+    if(order == "normal"){
+        db.query('SELECT  ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idCategoria = ?', [idCategoria], (err, rows, fields) => {
+            if(! err){
+                casas = [];
+                rows.forEach(inmueble => {
+                    casas.push(inmueble.id);
+                })
+                db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
+                    if (! error){
 
-                    rows.forEach(propiedad => {
-                        imagen.forEach(header => {
-                            if (propiedad.id == header.idCasa){
-                                propiedad.header = header.nombre;
-                            }
+                        rows.forEach(propiedad => {
+                            imagen.forEach(header => {
+                                if (propiedad.id == header.idCasa){
+                                    propiedad.header = header.nombre;
+                                }
+                            });
                         });
-                    });
 
-                    res.send({
-                        status : true,
-                        data : rows,
-                        info : "se muestran todas los inmuebles que hay en la DB"
-                    });
-                }else{
-                    res.send({
-                        status : false,
-                        info : error
-                    });
-                }
-            });
-        }else{
-            res.send({
-                status : false,
-                info : err
-            });
-        }
-    });
+                        res.send({
+                            status : true,
+                            data : rows,
+                            info : "se muestran todas los inmuebles que hay en la DB"
+                        });
+                    }else{
+                        res.send({
+                            status : false,
+                            info : error
+                        });
+                    }
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else if(order == "high"){
+        db.query('SELECT  ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idCategoria = ? ORDER BY precio DESC', [idCategoria], (err, rows, fields) => {
+            if(! err){
+                casas = [];
+                rows.forEach(inmueble => {
+                    casas.push(inmueble.id);
+                })
+                db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
+                    if (! error){
+
+                        rows.forEach(propiedad => {
+                            imagen.forEach(header => {
+                                if (propiedad.id == header.idCasa){
+                                    propiedad.header = header.nombre;
+                                }
+                            });
+                        });
+
+                        res.send({
+                            status : true,
+                            data : rows,
+                            info : "se muestran todas los inmuebles que hay en la DB"
+                        });
+                    }else{
+                        res.send({
+                            status : false,
+                            info : error
+                        });
+                    }
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else if(order == "low"){
+        db.query('SELECT  ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idCategoria = ? ORDER BY precio ASC', [idCategoria], (err, rows, fields) => {
+            if(! err){
+                casas = [];
+                rows.forEach(inmueble => {
+                    casas.push(inmueble.id);
+                })
+                db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
+                    if (! error){
+
+                        rows.forEach(propiedad => {
+                            imagen.forEach(header => {
+                                if (propiedad.id == header.idCasa){
+                                    propiedad.header = header.nombre;
+                                }
+                            });
+                        });
+
+                        res.send({
+                            status : true,
+                            data : rows,
+                            info : "se muestran todas los inmuebles que hay en la DB"
+                        });
+                    }else{
+                        res.send({
+                            status : false,
+                            info : error
+                        });
+                    }
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }
 });
 
 
 
 
-router.get('/filtrar_ubicacion/:idLocalidad', (req, res) => {
-    const idLocalidad = req.params.idLocalidad;
-    db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idLocalidad = ?', [idLocalidad], (err, rows, fields) => {
-        if(! err){
-            casas = [];
-            rows.forEach(inmueble => {
-                casas.push(inmueble.id);
-            })
-            db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
-                if (! error){
+router.get('/filtrar_ubicacion/:idLocalidad/:order', (req, res) => {
+    const {idLocalidad, order }= req.params;
+    if (order == "normal"){
+        db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idLocalidad = ?', [idLocalidad], (err, rows, fields) => {
+            if(! err){
+                casas = [];
+                rows.forEach(inmueble => {
+                    casas.push(inmueble.id);
+                })
+                db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
+                    if (! error){
 
-                    rows.forEach(propiedad => {
-                        imagen.forEach(header => {
-                            if (propiedad.id == header.idCasa){
-                                propiedad.header = header.nombre;
-                            }
+                        rows.forEach(propiedad => {
+                            imagen.forEach(header => {
+                                if (propiedad.id == header.idCasa){
+                                    propiedad.header = header.nombre;
+                                }
+                            });
                         });
-                    });
 
-                    res.send({
-                        status : true,
-                        data : rows,
-                        info : "se muestran todas los inmuebles que hay en la DB"
-                    });
-                }else{
-                    res.send({
-                        status : false,
-                        info : error
-                    });
-                }
-            });
-        }else{
-            res.send({
-                status : false,
-                info : err
-            });
-        }
-    });
+                        res.send({
+                            status : true,
+                            data : rows,
+                            info : "se muestran todas los inmuebles que hay en la DB"
+                        });
+                    }else{
+                        res.send({
+                            status : false,
+                            info : error
+                        });
+                    }
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else if (order == "high"){
+        db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idLocalidad = ? ORDER BY precio DESC', [idLocalidad], (err, rows, fields) => {
+            if(! err){
+                casas = [];
+                rows.forEach(inmueble => {
+                    casas.push(inmueble.id);
+                })
+                db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
+                    if (! error){
+
+                        rows.forEach(propiedad => {
+                            imagen.forEach(header => {
+                                if (propiedad.id == header.idCasa){
+                                    propiedad.header = header.nombre;
+                                }
+                            });
+                        });
+
+                        res.send({
+                            status : true,
+                            data : rows,
+                            info : "se muestran todas los inmuebles que hay en la DB"
+                        });
+                    }else{
+                        res.send({
+                            status : false,
+                            info : error
+                        });
+                    }
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else if (order == "low"){
+        db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idLocalidad = ? ORDER BY precio ASC', [idLocalidad], (err, rows, fields) => {
+            if(! err){
+                casas = [];
+                rows.forEach(inmueble => {
+                    casas.push(inmueble.id);
+                })
+                db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
+                    if (! error){
+
+                        rows.forEach(propiedad => {
+                            imagen.forEach(header => {
+                                if (propiedad.id == header.idCasa){
+                                    propiedad.header = header.nombre;
+                                }
+                            });
+                        });
+
+                        res.send({
+                            status : true,
+                            data : rows,
+                            info : "se muestran todas los inmuebles que hay en la DB"
+                        });
+                    }else{
+                        res.send({
+                            status : false,
+                            info : error
+                        });
+                    }
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }
 });
 
 
 
-router.get('/filtrar_todo/:idLocalidad/:idCategoria/:idOperacion', (req, res) => {
-    const { idLocalidad, idCategoria, idOperacion }= req.params;
-    db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idLocalidad = ? AND idCategoria = ? AND idOperacion = ?', [idLocalidad, idCategoria, idOperacion], (err, rows, fields) => {
-        if(! err){
-            casas = [];
-            rows.forEach(inmueble => {
-                casas.push(inmueble.id);
-            })
-            db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
-                if (! error){
+router.get('/filtrar_todo/:idLocalidad/:idCategoria/:idOperacion/:order', (req, res) => {
+    const { idLocalidad, idCategoria, idOperacion, order }= req.params;
+    if(order == "normal"){
+        db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idLocalidad = ? AND idCategoria = ? AND idOperacion = ?', [idLocalidad, idCategoria, idOperacion], (err, rows, fields) => {
+            if(! err){
+                casas = [];
+                rows.forEach(inmueble => {
+                    casas.push(inmueble.id);
+                })
+                db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
+                    if (! error){
 
-                    rows.forEach(propiedad => {
-                        imagen.forEach(header => {
-                            if (propiedad.id == header.idCasa){
-                                propiedad.header = header.nombre;
-                            }
+                        rows.forEach(propiedad => {
+                            imagen.forEach(header => {
+                                if (propiedad.id == header.idCasa){
+                                    propiedad.header = header.nombre;
+                                }
+                            });
                         });
-                    });
 
-                    res.send({
-                        status : true,
-                        data : rows,
-                        info : "se muestran todas los inmuebles que hay en la DB"
-                    });
-                }else{
-                    res.send({
-                        status : false,
-                        info : error
-                    });
-                }
-            });
-        }else{
-            res.send({
-                status : false,
-                info : err
-            });
-        }
-    });
+                        res.send({
+                            status : true,
+                            data : rows,
+                            info : "se muestran todas los inmuebles que hay en la DB"
+                        });
+                    }else{
+                        res.send({
+                            status : false,
+                            info : error
+                        });
+                    }
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else if(order == "high"){
+        db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idLocalidad = ? AND idCategoria = ? AND idOperacion = ? ORDER BY precio DESC', [idLocalidad, idCategoria, idOperacion], (err, rows, fields) => {
+            if(! err){
+                casas = [];
+                rows.forEach(inmueble => {
+                    casas.push(inmueble.id);
+                })
+                db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
+                    if (! error){
+
+                        rows.forEach(propiedad => {
+                            imagen.forEach(header => {
+                                if (propiedad.id == header.idCasa){
+                                    propiedad.header = header.nombre;
+                                }
+                            });
+                        });
+
+                        res.send({
+                            status : true,
+                            data : rows,
+                            info : "se muestran todas los inmuebles que hay en la DB"
+                        });
+                    }else{
+                        res.send({
+                            status : false,
+                            info : error
+                        });
+                    }
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else if(order == "low"){
+        db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idLocalidad = ? AND idCategoria = ? AND idOperacion = ? ORDER BY precio ASC', [idLocalidad, idCategoria, idOperacion], (err, rows, fields) => {
+            if(! err){
+                casas = [];
+                rows.forEach(inmueble => {
+                    casas.push(inmueble.id);
+                })
+                db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
+                    if (! error){
+
+                        rows.forEach(propiedad => {
+                            imagen.forEach(header => {
+                                if (propiedad.id == header.idCasa){
+                                    propiedad.header = header.nombre;
+                                }
+                            });
+                        });
+
+                        res.send({
+                            status : true,
+                            data : rows,
+                            info : "se muestran todas los inmuebles que hay en la DB"
+                        });
+                    }else{
+                        res.send({
+                            status : false,
+                            info : error
+                        });
+                    }
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else if(order == "high"){
+        db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idLocalidad = ? AND idCategoria = ? AND idOperacion = ? ORDER BY precio DESC', [idLocalidad, idCategoria, idOperacion], (err, rows, fields) => {
+            if(! err){
+                casas = [];
+                rows.forEach(inmueble => {
+                    casas.push(inmueble.id);
+                })
+                db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
+                    if (! error){
+
+                        rows.forEach(propiedad => {
+                            imagen.forEach(header => {
+                                if (propiedad.id == header.idCasa){
+                                    propiedad.header = header.nombre;
+                                }
+                            });
+                        });
+
+                        res.send({
+                            status : true,
+                            data : rows,
+                            info : "se muestran todas los inmuebles que hay en la DB"
+                        });
+                    }else{
+                        res.send({
+                            status : false,
+                            info : error
+                        });
+                    }
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }
 });
 
 
 
-router.get('/filtrar_categoria_operacion/:idCategoria/:idOperacion', (req, res) => {
-    const { idLocalidad, idCategoria, idOperacion }= req.params;
-    db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idCategoria = ? AND idOperacion = ?', [idCategoria, idOperacion], (err, rows, fields) => {
-        if(! err){
-            casas = [];
-            rows.forEach(inmueble => {
-                casas.push(inmueble.id);
-            })
-            db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
-                if (! error){
+router.get('/filtrar_categoria_operacion/:idCategoria/:idOperacion/:order', (req, res) => {
+    const { idCategoria, idOperacion, order }= req.params;
+    if (order == "normal"){
+        db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idCategoria = ? AND idOperacion = ?', [idCategoria, idOperacion], (err, rows, fields) => {
+            if(! err){
+                casas = [];
+                rows.forEach(inmueble => {
+                    casas.push(inmueble.id);
+                })
+                db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
+                    if (! error){
 
-                    rows.forEach(propiedad => {
-                        imagen.forEach(header => {
-                            if (propiedad.id == header.idCasa){
-                                propiedad.header = header.nombre;
-                            }
+                        rows.forEach(propiedad => {
+                            imagen.forEach(header => {
+                                if (propiedad.id == header.idCasa){
+                                    propiedad.header = header.nombre;
+                                }
+                            });
                         });
-                    });
 
-                    res.send({
-                        status : true,
-                        data : rows,
-                        info : "se muestran todas los inmuebles que hay en la DB"
-                    });
-                }else{
-                    res.send({
-                        status : false,
-                        info : error
-                    });
-                }
-            });
-        }else{
-            res.send({
-                status : false,
-                info : err
-            });
-        }
-    });
+                        res.send({
+                            status : true,
+                            data : rows,
+                            info : "se muestran todas los inmuebles que hay en la DB"
+                        });
+                    }else{
+                        res.send({
+                            status : false,
+                            info : error
+                        });
+                    }
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else if (order == "low"){
+        db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idCategoria = ? AND idOperacion = ? ORDER BY precio ASC', [idCategoria, idOperacion], (err, rows, fields) => {
+            if(! err){
+                casas = [];
+                rows.forEach(inmueble => {
+                    casas.push(inmueble.id);
+                })
+                db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
+                    if (! error){
+
+                        rows.forEach(propiedad => {
+                            imagen.forEach(header => {
+                                if (propiedad.id == header.idCasa){
+                                    propiedad.header = header.nombre;
+                                }
+                            });
+                        });
+
+                        res.send({
+                            status : true,
+                            data : rows,
+                            info : "se muestran todas los inmuebles que hay en la DB"
+                        });
+                    }else{
+                        res.send({
+                            status : false,
+                            info : error
+                        });
+                    }
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else if (order == "high"){
+        db.query('SELECT ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id WHERE idCategoria = ? AND idOperacion = ? ORDER BY precio DESC', [idCategoria, idOperacion], (err, rows, fields) => {
+            if(! err){
+                casas = [];
+                rows.forEach(inmueble => {
+                    casas.push(inmueble.id);
+                })
+                db.query('SELECT * FROM imagenes WHERE idCasa = ? AND header = true', [casas], (error, imagen, celdas) => {
+                    if (! error){
+
+                        rows.forEach(propiedad => {
+                            imagen.forEach(header => {
+                                if (propiedad.id == header.idCasa){
+                                    propiedad.header = header.nombre;
+                                }
+                            });
+                        });
+
+                        res.send({
+                            status : true,
+                            data : rows,
+                            info : "se muestran todas los inmuebles que hay en la DB"
+                        });
+                    }else{
+                        res.send({
+                            status : false,
+                            info : error
+                        });
+                    }
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }
 });
 
 // !FILTERS ------------------------------------
@@ -645,47 +986,130 @@ router.post('/insertar_inmueble', (req, res) => {
 
 // INICIO FUNCIÓN ----- MOSTRAR INMUEBLES -----
 
-router.get('/listar_inmuebles/:cantidad', (req, res) => {
+router.get('/listar_inmuebles/:cantidad/:order', (req, res) => {
     const cantidad = parseInt(req.params.cantidad);
-    db.query('SELECT  ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id ORDER BY inmuebles.id DESC LIMIT ?', [cantidad],(err, rows, fields) => {
-        if(! err){
-            casas = [];
-            rows.forEach(inmueble => {
-                casas.push(inmueble.id);
-            })
-            db.query('SELECT * FROM imagenes WHERE idCasa IN (?) AND header = true', [casas], (error, imagen, celdas) => {
-                if (! error){
+    const order = req.params.order;
+    if(order == "normal"){
+        db.query('SELECT  ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id ORDER BY inmuebles.id DESC LIMIT ?', [cantidad],(err, rows, fields) => {
+            if(! err){
+                casas = [];
+                rows.forEach(inmueble => {
+                    casas.push(inmueble.id);
+                })
+                db.query('SELECT * FROM imagenes WHERE idCasa IN (?) AND header = true', [casas], (error, imagen, celdas) => {
+                    if (! error){
 
-                    rows.forEach(propiedad => {
-                        imagen.forEach(header => {
-                            if (propiedad.id == header.idCasa){
-                                propiedad.header = header.nombre;
-                            }
+                        rows.forEach(propiedad => {
+                            imagen.forEach(header => {
+                                if (propiedad.id == header.idCasa){
+                                    propiedad.header = header.nombre;
+                                }
+                            });
                         });
-                    });
 
 
 
 
-                    res.send({
-                        status : true,
-                        data : rows,
-                        info : "se muestran todas los inmuebles que hay en la DB"
-                    });
-                }else{
-                    res.send({
-                        status : false,
-                        info : error
-                    });
-                }
-            });
-        }else{
-            res.send({
-                status : false,
-                info : err
-            });
-        }
-    });
+                        res.send({
+                            status : true,
+                            data : rows,
+                            info : "se muestran todas los inmuebles que hay en la DB"
+                        });
+                    }else{
+                        res.send({
+                            status : false,
+                            info : error
+                        });
+                    }
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else if(order == "high"){
+        db.query('SELECT  ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id ORDER BY inmuebles.precio DESC LIMIT ?', [cantidad],(err, rows, fields) => {
+            if(! err){
+                casas = [];
+                rows.forEach(inmueble => {
+                    casas.push(inmueble.id);
+                })
+                db.query('SELECT * FROM imagenes WHERE idCasa IN (?) AND header = true', [casas], (error, imagen, celdas) => {
+                    if (! error){
+
+                        rows.forEach(propiedad => {
+                            imagen.forEach(header => {
+                                if (propiedad.id == header.idCasa){
+                                    propiedad.header = header.nombre;
+                                }
+                            });
+                        });
+
+
+
+
+                        res.send({
+                            status : true,
+                            data : rows,
+                            info : "se muestran todas los inmuebles que hay en la DB"
+                        });
+                    }else{
+                        res.send({
+                            status : false,
+                            info : error
+                        });
+                    }
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    } else if(order == "low"){
+        db.query('SELECT  ubicacion.partido, ubicacion.localidad, tipo_operacion.operacion, categorias.categoria, datos_tecnicos.*, inmuebles.* FROM inmuebles LEFT JOIN ubicacion ON inmuebles.idLocalidad = ubicacion.id LEFT JOIN datos_tecnicos ON inmuebles.id = datos_tecnicos.idCasa LEFT JOIN categorias ON inmuebles.idCategoria = categorias.id LEFT JOIN tipo_operacion ON inmuebles.idOperacion = tipo_operacion.id ORDER BY inmuebles.precio ASC LIMIT ?', [cantidad],(err, rows, fields) => {
+            if(! err){
+                casas = [];
+                rows.forEach(inmueble => {
+                    casas.push(inmueble.id);
+                })
+                db.query('SELECT * FROM imagenes WHERE idCasa IN (?) AND header = true', [casas], (error, imagen, celdas) => {
+                    if (! error){
+
+                        rows.forEach(propiedad => {
+                            imagen.forEach(header => {
+                                if (propiedad.id == header.idCasa){
+                                    propiedad.header = header.nombre;
+                                }
+                            });
+                        });
+
+
+
+
+                        res.send({
+                            status : true,
+                            data : rows,
+                            info : "se muestran todas los inmuebles que hay en la DB"
+                        });
+                    }else{
+                        res.send({
+                            status : false,
+                            info : error
+                        });
+                    }
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }
 });
 
 // FINAL FUNCIÓN ----- MOSTRAR INMUEBLES -----
