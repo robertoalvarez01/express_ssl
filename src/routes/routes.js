@@ -926,9 +926,23 @@ router.post('/insertar_inmueble', (req, res) => {
         [idOperacion, precio, idLocalidad, direccion, idCategoria, descripcion, estado, moneda ] , 
         (err, rows, fields) => {
             if(! err){
-                res.send({
-                    status : true,
-                    info : "operacion insertada con éxito"
+
+                db.query('SELECT id FROM inmuebles WHERE idOperacion = ? AND precio = ? AND idLocalidad = ? AND direccion = ? AND idCategoria = ? AND descripcion = ? AND estado = ? AND moneda', [idOperacion, precio, idLocalidad, direccion, idCategoria, descripcion, estado, moneda ], 
+                (error, filas, celdas)=>{
+                    if(!error){
+
+                        res.send({
+                            status : true,
+                            data : filas,
+                            info : "operacion insertada con éxito"
+                        });
+
+                    }else{
+                        res.send({
+                            status : false,
+                            info : err
+                        });
+                    }
                 });
             }else{
                 res.send({
