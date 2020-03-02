@@ -927,7 +927,7 @@ router.post('/insertar_inmueble', (req, res) => {
         (err, rows, fields) => {
             if(! err){
 
-                db.query('SELECT id FROM inmuebles WHERE idOperacion = ? AND precio = ? AND idLocalidad = ? AND direccion = ? AND idCategoria = ? AND descripcion = ? AND estado = ? AND moneda', [idOperacion, precio, idLocalidad, direccion, idCategoria, descripcion, estado, moneda ], 
+                db.query('SELECT id FROM inmuebles ORDER BY id DESC LIMIT 1', [idOperacion, precio, idLocalidad, direccion, idCategoria, descripcion, estado, moneda ], 
                 (error, filas, celdas)=>{
                     if(!error){
 
