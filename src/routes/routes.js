@@ -1164,7 +1164,7 @@ router.put('/modificar_inmueble', (req, res) => {
 
 router.delete('/borrar_inmueble', (req, res) => {
     const { id, pass } = req.body ;
-    db.query('DELETE FROM inmuebles WHERE id = ?', [ id ],(err, rows, fields) => {
+    db.query('DELETE FROM imagenes WHERE idCasa = ?; DELETE FROM servicios WHERE idCasa = ?; DELETE FROM datos_tecnicos WHERE idCasa = ?; DELETE FROM inmuebles WHERE id = ?;', [ id, id, id, id ],(err, rows, fields) => {
         if(pass == password){
             if(! err){
                 res.send({
