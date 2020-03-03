@@ -660,26 +660,26 @@ router.put('/modificar_imagen', (req, res) => {
 
 router.delete('/borrar_imagen', (req, res) => {
     const { id, pass } = req.body ;
-    db.query('DELETE FROM imagenes WHERE id=?', [id],(err, rows, fields) => {
         if(pass == password){
-            if(! err){
-                res.send({
-                    status : true,
-                    info : "se ha borrado con éxito el registro"
-                });
-            }else{
-                res.send({
-                    status : false,
-                    info : err
-                });
-            }
+            db.query('DELETE FROM imagenes WHERE id=?', [id],(err, rows, fields) => {
+                if(! err){
+                    res.send({
+                        status : true,
+                        info : "se ha borrado con éxito el registro"
+                    });
+                }else{
+                    res.send({
+                        status : false,
+                        info : err
+                    });
+                }
+            });
         }else {
             res.send({
                 status : false,
                 info : "la contraseña ingresada no es compatible"
             });
         }
-    });
 });
 
 router.get('/imagenes', (req, res) => {
@@ -762,26 +762,26 @@ router.put('/modificar_servicio', (req, res) => {
 
 router.delete('/borrar_servcio', (req, res) => {
     const { id, pass } = req.body ;
-    db.query('DELETE FROM servicios WHERE id=?', [id],(err, rows, fields) => {
         if(pass == password){
-            if(! err){
-                res.send({
-                    status : true,
-                    info : "se ha borrado con éxito el registro"
-                });
-            }else{
-                res.send({
-                    status : false,
-                    info : err
-                });
-            }
+            db.query('DELETE FROM servicios WHERE id=?', [id],(err, rows, fields) => {
+                if(! err){
+                    res.send({
+                        status : true,
+                        info : "se ha borrado con éxito el registro"
+                    });
+                }else{
+                    res.send({
+                        status : false,
+                        info : err
+                    });
+                }
+            });
         }else {
             res.send({
                 status : false,
                 info : "la contraseña ingresada no es compatible"
             });
         }
-    });
 });
 
 router.get('/servicios', (req, res) => {
@@ -844,26 +844,26 @@ router.put('/modificar_dato_tecnico', (req, res) => {
 
 router.delete('/borrar_dato_tecnico', (req, res) => {
     const { id, pass } = req.body ;
-    db.query('DELETE FROM datos_tecnicos WHERE id=?', [id],(err, rows, fields) => {
         if(pass == password){
-            if(! err){
-                res.send({
-                    status : true,
-                    info : "se ha borrado con éxito el registro"
-                });
-            }else{
-                res.send({
-                    status : false,
-                    info : err
-                });
-            }
+            db.query('DELETE FROM datos_tecnicos WHERE id=?', [id],(err, rows, fields) => {
+                if(! err){
+                    res.send({
+                        status : true,
+                        info : "se ha borrado con éxito el registro"
+                    });
+                }else{
+                    res.send({
+                        status : false,
+                        info : err
+                    });
+                }
+            });
         }else {
             res.send({
                 status : false,
                 info : "la contraseña ingresada no es compatible"
             });
         }
-    });
 });
 
 // FINAL FUNCIÓN ----- BORRAR DATO TECNICO -----
@@ -1164,26 +1164,26 @@ router.put('/modificar_inmueble', (req, res) => {
 
 router.delete('/borrar_inmueble', (req, res) => {
     const { id, pass } = req.body ;
-    db.query('DELETE FROM imagenes WHERE idCasa = ?; DELETE FROM servicios WHERE idCasa = ?; DELETE FROM datos_tecnicos WHERE idCasa = ?; DELETE FROM inmuebles WHERE id = ?;', [ id, id, id, id ],(err, rows, fields) => {
         if(pass == password){
-            if(! err){
-                res.send({
-                    status : true,
-                    info : "se ha borrado con éxito el registro"
-                });
-            }else{
-                res.send({
-                    status : false,
-                    info : err
-                });
-            }
+            db.query('DELETE FROM imagenes WHERE idCasa = ?; DELETE FROM servicios WHERE idCasa = ?; DELETE FROM datos_tecnicos WHERE idCasa = ?; DELETE FROM inmuebles WHERE id = ?;', [ id, id, id, id ],(err, rows, fields) => {
+                if(! err){
+                    res.send({
+                        status : true,
+                        info : "se ha borrado con éxito el registro"
+                    });
+                }else{
+                    res.send({
+                        status : false,
+                        info : err
+                    });
+                }
+            });
         }else {
             res.send({
                 status : false,
                 info : "la contraseña ingresada no es compatible"
             });
         }
-    });
 });
 
 // FINAL FUNCIÓN ----- BORRAR INMUEBLE -----
@@ -1193,26 +1193,26 @@ router.delete('/borrar_inmueble', (req, res) => {
 
 router.delete('/borrar_ubicacion', (req, res) => {
     const { id, pass } = req.body ;
-    db.query('DELETE FROM ubicacion WHERE id=?', [id],(err, rows, fields) => {
         if(pass == password){
-            if(! err){
-                res.send({
-                    status : true,
-                    info : "se ha borrado con éxito el registro"
-                });
-            }else{
-                res.send({
-                    status : false,
-                    info : err
-                });
-            }
+            db.query('DELETE FROM ubicacion WHERE id=?', [id],(err, rows, fields) => {
+                if(! err){
+                    res.send({
+                        status : true,
+                        info : "se ha borrado con éxito el registro"
+                    });
+                }else{
+                    res.send({
+                        status : false,
+                        info : err
+                    });
+                }
+            });
         }else {
             res.send({
                 status : false,
                 info : "la contraseña ingresada no es compatible"
             });
         }
-    });
 });
 
 // FINAL FUNCIÓN ----- BORRAR UBICACIÓN -----
@@ -1332,26 +1332,26 @@ router.put('/modificar_ubicacion', (req, res) => {
 
 router.delete('/borrar_operacion', (req, res) => {
     const { id, pass } = req.body ;
-    db.query('DELETE FROM tipo_operacion WHERE id=?', [id],(err, rows, fields) => {
         if(pass == password){
-            if(! err){
-                res.send({
-                    status : true,
-                    info : "se ha borrado con éxito el registro"
-                });
-            }else{
-                res.send({
-                    status : false,
-                    info : err
-                });
-            }
+            db.query('DELETE FROM tipo_operacion WHERE id=?', [id],(err, rows, fields) => {
+                if(! err){
+                    res.send({
+                        status : true,
+                        info : "se ha borrado con éxito el registro"
+                    });
+                }else{
+                    res.send({
+                        status : false,
+                        info : err
+                    });
+                }
+            });
         }else {
             res.send({
                 status : false,
                 info : "la contraseña ingresada no es compatible"
             });
         }
-    });
 });
 
 // FINAL FUNCIÓN ----- BORRAR TIPO DE OPERACIÓN -----
@@ -1440,26 +1440,26 @@ router.put('/modificar_operacion', (req, res) => {
 
 router.delete('/borrar_categoria', (req, res) => {
     const { id, pass } = req.body ;
-    db.query('DELETE FROM categorias WHERE id=?', [id],(err, rows, fields) => {
         if(pass == password){
-            if(! err){
-                res.send({
-                    status : true,
-                    info : "se ha borrado con éxito el registro"
-                });
-            }else{
-                res.send({
-                    status : false,
-                    info : err
-                });
-            }
+            db.query('DELETE FROM categorias WHERE id=?', [id],(err, rows, fields) => {
+                if(! err){
+                    res.send({
+                        status : true,
+                        info : "se ha borrado con éxito el registro"
+                    });
+                }else{
+                    res.send({
+                        status : false,
+                        info : err
+                    });
+                }
+            });
         }else {
             res.send({
                 status : false,
                 info : "la contraseña ingresada no es compatible"
             });
         }
-    });
 });
 
 // FINAL FUNCIÓN ----- BORRAR CATEGORIA -----
