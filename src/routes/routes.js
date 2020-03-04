@@ -1206,13 +1206,13 @@ router.delete('/borrar_ubicacion/:id/:pass', (req, res) => {
                     info : err
                 });
             }
+            });
         }else {
             res.send({
                 status : false,
                 info : "la contraseña ingresada no es compatible"
             });
         }
-    });
 });
 
 // FINAL FUNCIÓN ----- BORRAR UBICACIÓN -----
