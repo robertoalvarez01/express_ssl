@@ -658,14 +658,8 @@ router.put('/modificar_imagen', (req, res) => {
 });
 
 
-<<<<<<< HEAD
 router.delete('/borrar_imagen/:id/:pass', (req, res) => {
     const { id, pass } = req.params ;
-    db.query('DELETE FROM imagenes WHERE id=?', [id],(err, rows, fields) => {
-=======
-router.delete('/borrar_imagen', (req, res) => {
-    const { id, pass } = req.body ;
->>>>>>> 6e496487861fd6c5e862b178db81bdbbbafe1305
         if(pass == password){
             db.query('DELETE FROM imagenes WHERE id=?', [id],(err, rows, fields) => {
                 if(! err){
@@ -678,7 +672,7 @@ router.delete('/borrar_imagen', (req, res) => {
                         status : false,
                         info : err
                     });
-                }
+                }   
             });
         }else {
             res.send({
@@ -766,27 +760,21 @@ router.put('/modificar_servicio', (req, res) => {
     }
 });
 
-<<<<<<< HEAD
 router.delete('/borrar_servcio/:id/:pass', (req, res) => {
     const { id, pass } = req.params ;
-    db.query('DELETE FROM servicios WHERE id=?', [id],(err, rows, fields) => {
-=======
-router.delete('/borrar_servcio', (req, res) => {
-    const { id, pass } = req.body ;
->>>>>>> 6e496487861fd6c5e862b178db81bdbbbafe1305
         if(pass == password){
             db.query('DELETE FROM servicios WHERE id=?', [id],(err, rows, fields) => {
-                if(! err){
-                    res.send({
-                        status : true,
-                        info : "se ha borrado con éxito el registro"
-                    });
-                }else{
-                    res.send({
-                        status : false,
-                        info : err
-                    });
-                }
+            if(! err){
+                res.send({
+                    status : true,
+                    info : "se ha borrado con éxito el registro"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
             });
         }else {
             res.send({
@@ -854,27 +842,21 @@ router.put('/modificar_dato_tecnico', (req, res) => {
 
 // INICIO FUNCIÓN ----- BORRAR DATO TECNICO -----
 
-<<<<<<< HEAD
 router.delete('/borrar_dato_tecnico/:id/:pass', (req, res) => {
     const { id, pass } = req.params ;
-    db.query('DELETE FROM datos_tecnicos WHERE id=?', [id],(err, rows, fields) => {
-=======
-router.delete('/borrar_dato_tecnico', (req, res) => {
-    const { id, pass } = req.body ;
->>>>>>> 6e496487861fd6c5e862b178db81bdbbbafe1305
         if(pass == password){
             db.query('DELETE FROM datos_tecnicos WHERE id=?', [id],(err, rows, fields) => {
-                if(! err){
-                    res.send({
-                        status : true,
-                        info : "se ha borrado con éxito el registro"
-                    });
-                }else{
-                    res.send({
-                        status : false,
-                        info : err
-                    });
-                }
+            if(! err){
+                res.send({
+                    status : true,
+                    info : "se ha borrado con éxito el registro"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
             });
         }else {
             res.send({
@@ -1180,16 +1162,10 @@ router.put('/modificar_inmueble', (req, res) => {
 
 // INICIO FUNCIÓN ----- BORRAR INMUEBLE -----
 
-<<<<<<< HEAD
 router.delete('/borrar_inmueble/:id/:pass', (req, res) => {
     const { id, pass } = req.params ;
-    db.query('DELETE FROM inmuebles WHERE id = ?', [ id ],(err, rows, fields) => {
-=======
-router.delete('/borrar_inmueble', (req, res) => {
-    const { id, pass } = req.body ;
->>>>>>> 6e496487861fd6c5e862b178db81bdbbbafe1305
         if(pass == password){
-            db.query('DELETE FROM imagenes WHERE idCasa = ?; DELETE FROM servicios WHERE idCasa = ?; DELETE FROM datos_tecnicos WHERE idCasa = ?; DELETE FROM inmuebles WHERE id = ?;', [ id, id, id, id ],(err, rows, fields) => {
+            db.query('DELETE FROM inmuebles WHERE id = ?', [ id ],(err, rows, fields) => {
                 if(! err){
                     res.send({
                         status : true,
@@ -1199,7 +1175,7 @@ router.delete('/borrar_inmueble', (req, res) => {
                     res.send({
                         status : false,
                         info : err
-                    });
+                });
                 }
             });
         }else {
@@ -1215,34 +1191,28 @@ router.delete('/borrar_inmueble', (req, res) => {
 
 // INICIO FUNCIÓN ----- BORRAR UBICACIÓN -----
 
-<<<<<<< HEAD
 router.delete('/borrar_ubicacion/:id/:pass', (req, res) => {
     const { id, pass } = req.params ;
-    db.query('DELETE FROM ubicacion WHERE id=?', [id],(err, rows, fields) => {
-=======
-router.delete('/borrar_ubicacion', (req, res) => {
-    const { id, pass } = req.body ;
->>>>>>> 6e496487861fd6c5e862b178db81bdbbbafe1305
         if(pass == password){
             db.query('DELETE FROM ubicacion WHERE id=?', [id],(err, rows, fields) => {
                 if(! err){
-                    res.send({
-                        status : true,
-                        info : "se ha borrado con éxito el registro"
-                    });
-                }else{
-                    res.send({
-                        status : false,
-                        info : err
-                    });
-                }
-            });
+                res.send({
+                    status : true,
+                    info : "se ha borrado con éxito el registro"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
         }else {
             res.send({
                 status : false,
                 info : "la contraseña ingresada no es compatible"
             });
         }
+    });
 });
 
 // FINAL FUNCIÓN ----- BORRAR UBICACIÓN -----
@@ -1360,27 +1330,21 @@ router.put('/modificar_ubicacion', (req, res) => {
 
 // INICIO FUNCIÓN ----- BORRAR TIPO DE OPERACIÓN -----
 
-<<<<<<< HEAD
 router.delete('/borrar_operacion/:id/:pass', (req, res) => {
     const { id, pass } = req.params ;
-    db.query('DELETE FROM tipo_operacion WHERE id=?', [id],(err, rows, fields) => {
-=======
-router.delete('/borrar_operacion', (req, res) => {
-    const { id, pass } = req.body ;
->>>>>>> 6e496487861fd6c5e862b178db81bdbbbafe1305
         if(pass == password){
             db.query('DELETE FROM tipo_operacion WHERE id=?', [id],(err, rows, fields) => {
                 if(! err){
-                    res.send({
-                        status : true,
-                        info : "se ha borrado con éxito el registro"
-                    });
-                }else{
-                    res.send({
-                        status : false,
-                        info : err
-                    });
-                }
+                res.send({
+                    status : true,
+                    info : "se ha borrado con éxito el registro"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
             });
         }else {
             res.send({
@@ -1474,27 +1438,21 @@ router.put('/modificar_operacion', (req, res) => {
 
 // INICIO FUNCIÓN ----- BORRAR CATEGORIA -----
 
-<<<<<<< HEAD
 router.delete('/borrar_categoria/:id/:pass', (req, res) => {
-    const { id, pass } = req.params ;
-    db.query('DELETE FROM categorias WHERE id=?', [id],(err, rows, fields) => {
-=======
-router.delete('/borrar_categoria', (req, res) => {
     const { id, pass } = req.body ;
->>>>>>> 6e496487861fd6c5e862b178db81bdbbbafe1305
         if(pass == password){
             db.query('DELETE FROM categorias WHERE id=?', [id],(err, rows, fields) => {
                 if(! err){
-                    res.send({
-                        status : true,
-                        info : "se ha borrado con éxito el registro"
-                    });
-                }else{
-                    res.send({
-                        status : false,
-                        info : err
-                    });
-                }
+                res.send({
+                    status : true,
+                    info : "se ha borrado con éxito el registro"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
             });
         }else {
             res.send({
