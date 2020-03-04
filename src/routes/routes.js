@@ -10,7 +10,41 @@ router.get('/', (req, res) => {
     res.send('Servidor funcionando con exito');
 });
 
+router.get('/quienes_somos', (req, res) => {
+    db.query('SELECT contenido FROM recursos', (err, rows, fields)=>{
+        if (!err){
+            res.send({
+                status : true,
+                data : rows,
+                info : "Se ejecuto con exito la peticion"
+            });
+        }else{
+            res.send({
+                status : false,
+                info : err
+            });
+        }
+    });
+});
 
+
+
+router.gput('/quienes_somos_modificar', (req, res) => {
+    const contenido = req.body;
+    db.query('UPDATE recursos SET contenido = ?', [contenido],(err, rows, fields)=>{
+        if (!err){
+            res.send({
+                status : true,
+                info : "Se ejecuto con exito la peticion"
+            });
+        }else{
+            res.send({
+                status : false,
+                info : err
+            });
+        }
+    });
+});
 // FILTERS ------------------------------------
 
 router.get('/filtrar_operacion/:idOperacion/:order', (req, res) => {
@@ -1159,6 +1193,9 @@ router.put('/modificar_inmueble', (req, res) => {
 });
 
 // FINAL FUNCIÓN ----- MODIFICAR INMUEBLE -----
+
+
+
 
 // INICIO FUNCIÓN ----- BORRAR INMUEBLE -----
 
