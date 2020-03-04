@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/quienes_somos', (req, res) => {
-    db.query('SELECT contenido FROM recursos', (err, rows, fields)=>{
+    db.query('SELECT contenido FROM recursos WHERE id = 1', (err, rows, fields)=>{
         if (!err){
             res.send({
                 status : true,
@@ -31,7 +31,7 @@ router.get('/quienes_somos', (req, res) => {
 
 router.put('/quienes_somos_modificar', (req, res) => {
     const {contenido} = req.body;
-    db.query('UPDATE recursos SET contenido = ?', [contenido],(err, rows, fields)=>{
+    db.query('UPDATE recursos SET contenido = ? WHERE id = 1', [contenido],(err, rows, fields)=>{
         if (!err){
             res.send({
                 status : true,
