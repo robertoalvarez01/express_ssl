@@ -1439,7 +1439,7 @@ router.put('/modificar_operacion', (req, res) => {
 // INICIO FUNCIÓN ----- BORRAR CATEGORIA -----
 
 router.delete('/borrar_categoria/:id/:pass', (req, res) => {
-    const { id, pass } = req.body ;
+    const { id, pass } = req.params ;
         if(pass == password){
             db.query('DELETE FROM categorias WHERE id=?', [id],(err, rows, fields) => {
                 if(! err){
