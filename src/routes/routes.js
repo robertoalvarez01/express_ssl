@@ -1270,6 +1270,36 @@ router.get('/buscar_localidades/:partido', (req, res) => {
 // FINAL FUNCIÓN ----- BUSCAR LOCALIDADES -----
 
 
+// INICIO FUNCIÓN ----- BUSCAR UBICACION -----
+
+router.get('/buscar_ubicacion/:id', (req, res) => {
+    const  id  = req.params.id;
+    if (id != undefined) {
+        db.query('SELECT * FROM ubicacion WHERE id LIKE ? ', [ id ] , (err, rows, fields) => {
+            if(! err){
+                console.log(rows);
+                res.send({
+                    status : true,
+                    data : rows,
+                    info : "se muestran todas las categorias con ese id que hay en la DB"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        });
+    }else{
+        res.send({
+            status : false,
+            info : "No has ingresado ningun id para buscar"
+        });
+    }
+});
+
+// FINAL FUNCIÓN ----- BUSCAR UBICACION -----
+
 
 // INICIO FUNCIÓN ----- INSERTAR UBICACIÓN -----
 
@@ -1360,6 +1390,28 @@ router.delete('/borrar_operacion/:id/:pass', (req, res) => {
 
 router.get('/operaciones', (req, res) => {
     db.query('SELECT * FROM tipo_operacion', (err, rows, fields) => {
+        if(! err){
+            res.send({
+                status : true,
+                data : rows,
+                info : "se muestran todas las operaciones que hay en la DB"
+            });
+        }else{
+            res.send({
+                status : false,
+                info : err
+            });
+        }
+    });
+});
+
+// FINAL FUNCIÓN ----- MOSTRAR TIPO DE OPERACIÓN -----
+
+// INICIO FUNCIÓN ----- MOSTRAR TIPO DE OPERACIÓN -----
+
+router.get('/buscar_operacion/:id', (req, res) => {
+    const id = req.params.id;
+    db.query('SELECT * FROM tipo_operacion WHERE id = ?',[id], (err, rows, fields) => {
         if(! err){
             res.send({
                 status : true,
