@@ -30,7 +30,7 @@ router.get('/quienes_somos', (req, res) => {
 
 
 router.put('/quienes_somos_modificar', (req, res) => {
-    const contenido = req.body;
+    const {contenido} = req.body;
     db.query('UPDATE recursos SET contenido = ?', [contenido],(err, rows, fields)=>{
         if (!err){
             res.send({
