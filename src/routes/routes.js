@@ -15,6 +15,7 @@ EmailSend.sendEmail = function(req, res){
         var transporter = nodemailer.createTransport({
             service: 'Gmail',
             port : 2525,
+            secure: false,
             auth: {
                 user: 'gonzaro0112@gmail.com',
                 pass: 'Rober1136484778'
