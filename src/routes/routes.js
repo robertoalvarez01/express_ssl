@@ -15,8 +15,8 @@ EmailSend.sendEmail = function(req, res){
         var transporter = nodemailer.createTransport({
             service: 'Gmail',
             auth: {
-                user: 'franco@asbaccopropiedades.com.ar',
-                pass: '12345678'
+                user: 'gonzaro0112@gmail.com',
+                pass: 'Rober1136484778'
             }
         });
 
@@ -33,7 +33,7 @@ EmailSend.sendEmail = function(req, res){
     transporter.sendMail(mailOptions, function(error, info){
         if (error){
             console.log(error);
-            res.send(500, err.message);
+            res.send(500, error.message);
         } else {
             console.log("Email sent");
             res.status(200).jsonp(req.body);
