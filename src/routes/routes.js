@@ -30,20 +30,27 @@ router.get('/quienes_somos', (req, res) => {
 
 
 router.put('/quienes_somos_modificar', (req, res) => {
-    const {contenido} = req.body;
-    db.query('UPDATE recursos SET contenido = ? WHERE id = 1', [contenido],(err, rows, fields)=>{
-        if (!err){
-            res.send({
-                status : true,
-                info : "Se ejecuto con exito la peticion"
-            });
-        }else{
-            res.send({
-                status : false,
-                info : err
-            });
-        }
-    });
+    const {contenido, pass} = req.body;
+    if(pass == password){
+        db.query('UPDATE recursos SET contenido = ? WHERE id = 1', [contenido],(err, rows, fields)=>{
+            if (!err){
+                res.send({
+                    status : true,
+                    info : "Se ejecuto con exito la peticion"
+                });
+            }else{
+                res.send({
+                    status : false,
+                    info : err
+                });
+            }
+        }); 
+    }else{
+        res.send({
+            status: false,
+            info : "La contraseña ingresada no es compatible."
+        });
+    }
 });
 // FILTERS ------------------------------------
 
