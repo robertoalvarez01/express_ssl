@@ -5,48 +5,6 @@ const db = require('../database/database');
 
 const password = "ZAQ12wsx";
 
-let EmailSend = {};
-var nodemailer = require('nodemailer');
-// email sender function
-EmailSend.sendEmail = function(req, res){
-
-
-
-        var transporter = nodemailer.createTransport({
-            service: 'Gmail',
-            port : 587,
-            secure: false,
-            auth: {
-                user: 'gonzaro0112@gmail.com',
-                pass: 'Rober1136484778'
-            }
-        });
-
-
-    var mailOptions = {
-        from: 'gonzaro0112@gmail.com',
-        to: 'robertogonzaloalvarez01@gmail.com',
-        subject: 'Prueba',
-        text: 'Contenido del email'
-    };
-
-
-
-    transporter.sendMail(mailOptions, function(error, info){
-        if (error){
-            console.log(error);
-            res.send(500, error.message);
-        } else {
-            console.log("Email sent");
-            res.status(200).jsonp(req.body);
-        }
-    });
-
-
-};
-
-router.post('/email', EmailSend.sendEmail);
-
 router.get('/', (req, res) => {
     res.send('Servidor funcionando con exito');
 });
