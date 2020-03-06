@@ -5,7 +5,7 @@ const db = require('../database/database');
 
 const password = "ZAQ12wsx";
 
-
+let EmailSend = {};
 var nodemailer = require('nodemailer');
 // email sender function
 EmailSend.sendEmail = function(req, res){
