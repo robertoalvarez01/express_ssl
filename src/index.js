@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const https = require('https');
+const fs = require('fs');
 
 
 // Middlewares
@@ -21,7 +23,13 @@ app.use(require('./routes/routes'));
 
 
 
+https.createServer({
+    key: fs.readFileSync('./certs/key.pem'),
+    cert: fs.readFileSync('./certs/cert.pem'),
+    passphrase: 'asbacco'
+}, app).listen(3443);
 
-app.listen(app.get('port'), () => {
-    console.log('Servidor escuchando en el puerto: ', app.get('port'));
-});
+
+// app.listen(app.get('port'), () => {
+//     console.log('Servidor escuchando en el puerto: ', app.get('port'));
+// });
